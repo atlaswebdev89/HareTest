@@ -4,9 +4,9 @@ services:
    
     web-server:
         image: webdev89/phpdebian
-        container_name: appHare 
+        container_name: appHare2 
         ports:
-          - 8947:80
+          - 8647:80
         environment:
           DB_HOST: db
           DB_DB: hare
@@ -16,16 +16,15 @@ services:
             - ./dist/:/var/www/html
         depends_on:
           - db
-          - initdata
         networks:
-          - hare
+          - hare2
           
     db:
         image: mysql:5.7
-        container_name: HareMysql
+        container_name: HareMysql2
         restart: always
         ports:
-          - 8946:3306
+          - 8646:3306
         environment:
           MYSQL_DATABASE: hare
           MYSQL_USER: user 
@@ -33,26 +32,26 @@ services:
           MYSQL_ROOT_PASSWORD: root
         volumes:
           - ./dump:/docker-entrypoint-initdb.d
-          - MysqlHare:/var/lib/mysql
+          - MysqlHare2:/var/lib/mysql
         networks:
-          - hare
+          - hare2
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin_hare
+        container_name: phpmyadmin_hare2
         restart: always
         ports: 
-          - 8929:80
+          - 8629:80
         environment:
           PMA_HOST: db
         depends_on:
           - db
         networks:
-          - hare
+          - hare2
           
 networks:
-  hare:
+  hare2:
     driver: bridge
 
 volumes:
-  MysqlHare:
+  MysqlHare2:
