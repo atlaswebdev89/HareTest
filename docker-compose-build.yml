@@ -1,0 +1,71 @@
+version: '3.1'
+
+services:
+    
+    initdata:
+        build: 
+            context: .
+            args:
+                DB_HOST: db
+                DB_DB: hare
+                DB_USER: user
+                DB_PASS: user
+        container_name: initdataHare 
+        depends_on:
+          - db
+        networks:
+          - hare
+          
+    web-server:
+        image: webdev89/phpdebian
+        container_name: appHare 
+        ports:
+          - 8947:80
+        environment:
+          DB_HOST: db
+          DB_DB: hare
+          DB_USER: user
+          DB_PASS: user
+        volumes:
+            - ./dist/:/var/www/html
+        depends_on:
+          - db
+          - initdata
+        networks:
+          - hare
+          
+    db:
+        image: mysql:5.7
+        container_name: HareMysql
+        restart: always
+        ports:
+          - 8946:3306
+        environment:
+          MYSQL_DATABASE: hare
+          MYSQL_USER: user 
+          MYSQL_PASSWORD: user
+          MYSQL_ROOT_PASSWORD: root
+        volumes:
+          - MysqlHare:/var/lib/mysql
+        networks:
+          - hare
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin_hare
+        restart: always
+        ports: 
+          - 8929:80
+        environment:
+          PMA_HOST: db
+        depends_on:
+          - db
+        networks:
+          - hare
+          
+networks:
+  hare:
+    driver: bridge
+
+volumes:
+  MysqlHare:

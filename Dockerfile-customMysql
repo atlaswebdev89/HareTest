@@ -1,0 +1,9 @@
+FROM mysql:5.7
+MAINTAINER atlas <web.dev89@yandex.by>
+
+ENV MYSQL_DATABASE hare
+ENV MYSQL_USER user
+ENV MYSQL_PASSWORD user
+ENV MYSQL_ROOT_PASSWORD root
+
+COPY dump.sql /docker-entrypoint-initdb.d 
